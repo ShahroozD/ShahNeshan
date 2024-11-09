@@ -42,8 +42,8 @@ That is so funny! :joy:
 To install this project, clone the repository and run the setup script:
 
 ```bash
-git clone https://github.com/example/markdown-parser.git
-cd markdown-parser
+git clone https://github.com/ShahroozD/ShahMark.git
+cd shahmark
 npm install
 ```
 

@@ -15,7 +15,7 @@ You can configure the library by calling the `configure` function with a configu
 ## Example Usage
 
 ```javascript
-import { configure, markdownToOutput } from 'markdown-parser';
+import { configure, markdownToOutput } from 'shahmark';
 
 // Configure the parser with custom settings and plugins
 configure({
