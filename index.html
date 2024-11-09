@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html dir="auto" lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Viewer</title>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+  <link rel="stylesheet" href="./customStyle.css">
+  <!-- <script src="script.js"></script> -->
+  <script src="./dist/markdownParser.js"></script>
+  
+</head>
+<body>
+  <div id="content">Loading...</div>
+  <script>
+    const testEmoji = {
+      name: "testEmoji",
+      beforeParse: (text) => text.replace(/:khande:/g, "😊")
+    }
+  </script>
+  <script>
+    // Inject custom styles
+    markdownParser.configure({
+      customStyles: ``,
+      plugins: [testEmoji] // Register plugins here
+    });
+
+
+    async function loadMarkdown() {
+    try {
+      // const response = await fetch('./examples/README.md');
+      const response = await fetch('./examples/PERSIAN.md');
+      if (!response.ok) throw new Error('Failed to load markdown file');
+      const markdown = await response.text();
+      
+      const htmlContent = markdownParser.markdownToOutput(markdown);
+      document.getElementById('content').innerHTML = htmlContent;
+    } catch (error) {
+      console.error(error);
+      document.getElementById('content').innerHTML = '<p>Error loading content.</p>';
+    }
+  }
+  loadMarkdown()
+  </script>
+</body>
+</html>

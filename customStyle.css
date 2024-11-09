@@ -1,0 +1,41 @@
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+#content {
+  direction: rtl;
+
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+ol{
+  list-style-type: persian;
+}
+  
+
+/* custom poet style */
+.poet {
+  max-width: fit-content;
+  justify-self: center;
+}
+
+.stanza{
+  width: 225px;
+  height: 32px;
+  text-align: justify !important;
+  display: inline-block;
+}
+
+.stanza:after {
+  content: "";
+  display: inline-block;
+  width: 100%;	
+}
