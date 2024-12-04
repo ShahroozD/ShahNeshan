@@ -2,11 +2,11 @@
 
 
 <a id="نسخه-فارسی"></a>
-# شه‌مارک
+# شه‌نشان
 
 این یک تجزیه‌گر Markdown قابل تنظیم است که می‌تواند با افزونه‌ها و گزینه‌های پیکربندی اضافی گسترش یابد.
 
-[Read the English version](#ShahMark)
+[Read the English version](#ShahNeshan)
 
 ---
 
@@ -23,7 +23,7 @@
 ## مثال استفاده
 
 ```javascript
-import { configure, markdownToOutput } from 'shahmark';
+import { configure, markdownToOutput } from 'ShahNeshan';
 
 // تنظیم تجزیه‌گر با تنظیمات و افزونه‌های سفارشی
 configure({
@@ -86,8 +86,8 @@ configure({
 </br>
 </br>
 
-<a id="ShahMark"></a>
-# ShahMark
+<a id="ShahNeshan"></a>
+# ShahNeshan
 
 This is a customizable Markdown parser that can be extended with plugins and additional configuration options. 
 
@@ -106,7 +106,7 @@ You can configure the library by calling the `configure` function with a configu
 ## Example Usage
 
 ```javascript
-import { configure, markdownToOutput } from 'shahmark';
+import { configure, markdownToOutput } from 'ShahNeshan';
 
 // Configure the parser with custom settings and plugins
 configure({
