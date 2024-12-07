@@ -23,7 +23,7 @@
 ## مثال استفاده
 
 ```javascript
-import { configure, markdownToOutput } from 'ShahNeshan';
+import { configure, markdownToOutput } from 'shahneshan';
 
 // تنظیم تجزیه‌گر با تنظیمات و افزونه‌های سفارشی
 configure({
@@ -106,7 +106,7 @@ You can configure the library by calling the `configure` function with a configu
 ## Example Usage
 
 ```javascript
-import { configure, markdownToOutput } from 'ShahNeshan';
+import { configure, markdownToOutput } from 'shahneshan';
 
 // Configure the parser with custom settings and plugins
 configure({

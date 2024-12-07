@@ -1,5 +1,5 @@
 {
-  "name": "shahmark",
+  "name": "shahneshan",
   "version": "1.0.0-beta.1",
   "description": "A markdown parser that converts to HTML.",
   "main": "dist/markdownParser.js",
@@ -11,12 +11,13 @@
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0"
   },
-  "directories": {
-    "example": "example"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShahroozD/ShahNeshan.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["markdown", "parser", "HTML", "javascript"],
+  "author": "shahrooz darani",
+  "license": "MIT",
   "devDependencies": {
     "babel-loader": "^9.2.1",
     "css-loader": "^7.1.2",
