@@ -40,7 +40,7 @@ export function parseMarkdownToNodes(markdown) {
       if (/^\.{3}/.test(line)) {
         if (!persianBlock) {
           persianBlock = true;
-          persianCode = line.replace(/^\.{3}/, '').trim();
+          persianCode = line.replace(/^\.{3}شعر/, '').trim();
           nodes.push(new Node('persianBlock', [], { code: persianCode }));
         } else {
           persianBlock = false;

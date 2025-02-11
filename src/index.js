@@ -10,6 +10,7 @@ const config = {
   customStyles: '' // Empty by default; users can set this to add custom styles
 };
 
+const pluginManager = new PluginManager();
 
 /**
  * Updates the configuration with custom options
@@ -24,14 +25,6 @@ export function configure(options = {}) {
     options.plugins.forEach(plugin => pluginManager.addPlugin(plugin));
   }
 }
-
-
-
-
-const pluginManager = new PluginManager();
-// pluginManager.addPlugin(examplePlugin); // Register plugins here
-
-
 
 /**
  * Main function to parse and render markdown to HTML
@@ -53,4 +46,8 @@ export function markdownToOutput(markdown) {
   return pluginManager.applyAfterParse(htmlOutput);
 
   // return renderNodesToHtml(nodes);
+}
+
+export function applyAfterRender(domElement) {
+  pluginManager.applyAfterRender(domElement);
 }

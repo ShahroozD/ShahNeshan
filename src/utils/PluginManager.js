@@ -27,7 +27,15 @@ class PluginManager {
             plugin.afterParse ? plugin.afterParse(htmlText) : htmlText,
         html);
     }
+    
+    // hook for when the HTML is already in the DOM
+    applyAfterRender(domElement) {
+        this.plugins.forEach(plugin => {
+            if (plugin.afterRender) {
+                plugin.afterRender(domElement);
+            }
+        });
+    }
 }
-  
 
 export default PluginManager;
