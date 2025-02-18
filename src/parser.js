@@ -180,7 +180,7 @@ export function parseMarkdownToNodes(markdown) {
         } else if (indentLevel < currentIndentLevel) {
             while (listStack.length > 0 && indentLevel < currentIndentLevel) {
                 listStack.pop();
-                currentIndentLevel -= 2;
+                currentIndentLevel -= 4;
             }
         }
 
@@ -215,7 +215,7 @@ export function parseMarkdownToNodes(markdown) {
             // Pop out of nested lists until the right level is reached
             while (listStack.length > 0 && indentLevel < currentIndentLevel) {
                 listStack.pop();
-                currentIndentLevel -= 2; // Adjust based on indentation
+                currentIndentLevel -= 4; // Adjust based on indentation
             }
         }
 
