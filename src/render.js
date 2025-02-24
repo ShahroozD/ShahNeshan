@@ -29,13 +29,28 @@ function nodeToHtml(node) {
       return `<pre><code class="${node.attributes.lang}">${code}</code></pre>`;
     
     case 'persianBlock':
-      return `<div class="persian poet ${node.attributes.code}">${renderNodesToHtml(node.content)}</div>`;
+      return `<div class="persian ${node.attributes.code}">${renderNodesToHtml(node.content)}</div>`;
     
     case 'poetRow':
         return `${renderNodesToHtml(node.content)}`;
     
     case 'poetCell':
         return `<div class="stanza">${node.content}</div>`;
+  
+    case 'note':
+      return `<div class="alert note"><h1>توجه</h1><p>${renderNodesToHtml(node.content)}</p></div>`;
+    
+    case 'tip':
+      return `<div class="alert tip"><h1>نکته</h1><p>${renderNodesToHtml(node.content)}</p></div>`;
+
+    case 'important':
+      return `<div class="alert important"><h1>مهم</h1><p>${renderNodesToHtml(node.content)}</p></div>`;
+    
+    case 'warning':
+      return `<div class="alert warning"><h1>هشدار</h1><p>${renderNodesToHtml(node.content)}</p></div>`;
+    
+    case 'caution':
+      return `<div class="alert caution"><h1>احتیاط</h1><p>${renderNodesToHtml(node.content)}</p></div>`;
       
     case 'hr':
       return `<hr />`;

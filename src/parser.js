@@ -40,7 +40,32 @@ export function parseMarkdownToNodes(markdown) {
       if (/^\.{3}/.test(line)) {
         if (!persianBlock) {
           persianBlock = true;
-          persianCode = line.replace(/^\.{3}شعر/, '').trim();
+          persianCode = line.replace(/^\.{3}/, '').trim();
+          switch (persianCode) {
+            case "شعر":
+              persianCode = "poet";
+              break;
+            case "شعرنو":
+              persianCode = "poet";
+              break;
+            case "توجه":
+              persianCode = "note";
+              break;
+            case "نکته":
+              persianCode = "tip";
+              break;
+            case "مهم":
+              persianCode = "important";
+              break;
+            case "هشدار":
+              persianCode = "warning";
+              break;
+            case "احتیاط":
+              persianCode = "caution";
+              break;
+            default:
+              break;
+          }
           nodes.push(new Node('persianBlock', [], { code: persianCode }));
         } else {
           persianBlock = false;
@@ -50,8 +75,12 @@ export function parseMarkdownToNodes(markdown) {
       }
       
       if (persianBlock) {
-        const cells = line.split(' -- ').map(cell => cell.trim());       
-        nodes[nodes.length - 1].content.push(new Node('poetRow', cells.map(cell => cell && new Node('poetCell', cell))));
+        if(persianCode == "poet"){
+          const cells = line.split(' -- ').map(cell => cell.trim());       
+          nodes[nodes.length - 1].content.push(new Node('poetRow', cells.map(cell => cell && new Node('poetCell', cell))));
+        }else{
+          nodes[nodes.length - 1].content.push(new Node(persianCode, parseMarkdownToNodes(line)));
+        }
         continue;
       }
       
@@ -87,7 +116,6 @@ export function parseMarkdownToNodes(markdown) {
       const footnoteDefMatch = line.match(/^\[\^(\d+)\]:\s+(.*)$/);
       
       if (footnoteDefMatch) {
-        console.log("asssads");
           const ref = footnoteDefMatch[1];
           const content = footnoteDefMatch[2];
           footnotes[ref] = content; // Store footnote content
@@ -143,7 +171,6 @@ export function parseMarkdownToNodes(markdown) {
               // Check if the next line is a row of '--' or '==' (header underline)
               if(isFirstRow){
                 isFirstRow = false;
-                console.log(line.trim());
                 if (/^\|\s*[-=]+\s*\|(\s*[-=]+\s*\|)*$/.test(line.trim())) {
                   
                     // Convert the first row's cells to header cells if underline is detected
@@ -154,7 +181,6 @@ export function parseMarkdownToNodes(markdown) {
                     line = lines[++i] || ''; // Skip the underline line
                 }
               }
-              // console.log(tableNode);
               
               tableRowMatch = line.match(/^\|(.+)\|$/);
           }
