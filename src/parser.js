@@ -190,8 +190,8 @@ export function parseMarkdownToNodes(markdown) {
       }
   
       // Detect unordered lists
-      if (/^\s*-\s(.*)/.test(line)) {
-        const content = line.replace(/^\s*-\s(.*)/, '$1');
+      if (/^\s*[-*]\s(.*)/.test(line)) {
+        const content = line.replace(/^\s*[-*]\s(.*)/, '$1');
         const listItemNode = new Node('li', parseMarkdownToNodes(content));
 
         // Handle nesting for unordered list
@@ -277,7 +277,7 @@ export function parseMarkdownToNodes(markdown) {
 
       // Handle explicit links `[text](url)`
       if (/\[(.*?)\]\((.*?)\)/g.test(parsedLine)){
-        parsedLine = line.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
+        parsedLine = parsedLine.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
           return `<a href="${url}" target="_blank">${text}</a>`;
         });
       } else if(/(?<!`)(https?:\/\/[^\s`]+)(?!`)/g.test(parsedLine)){
