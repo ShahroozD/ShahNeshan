@@ -38,48 +38,43 @@ export function parseMarkdownToNodes(markdown) {
       }
 
       if (/^\.{3}/.test(line)) {
+        const codeMap = {
+          "شعر": "poet",
+          "شعرنو": "poet",
+          "توجه": "note",
+          "نکته": "tip",
+          "مهم": "important",
+          "هشدار": "warning",
+          "احتیاط": "caution"
+        };
         if (!persianBlock) {
           persianBlock = true;
+          
           persianCode = line.replace(/^\.{3}/, '').trim();
-          switch (persianCode) {
-            case "شعر":
-              persianCode = "poet";
-              break;
-            case "شعرنو":
-              persianCode = "poet";
-              break;
-            case "توجه":
-              persianCode = "note";
-              break;
-            case "نکته":
-              persianCode = "tip";
-              break;
-            case "مهم":
-              persianCode = "important";
-              break;
-            case "هشدار":
-              persianCode = "warning";
-              break;
-            case "احتیاط":
-              persianCode = "caution";
-              break;
-            default:
-              break;
+          
+          if (codeMap[persianCode]) {
+            persianCode = codeMap[persianCode]; // Use mapped value
+            nodes.push(new Node('persianBlock', [], { code: persianCode }));
+          } else {
+            nodes.push(new Node('persianBlock', [new Node(persianCode, line)], { code: persianCode }));
           }
-          nodes.push(new Node('persianBlock', [], { code: persianCode }));
         } else {
+          if (codeMap[persianCode]) nodes[nodes.length - 1].content.push(new Node(persianCode, line));
           persianBlock = false;
-          persianCode = '';
         }
         continue;
       }
       
       if (persianBlock) {
-        if(persianCode == "poet"){
-          const cells = line.split(' -- ').map(cell => cell.trim());       
-          nodes[nodes.length - 1].content.push(new Node('poetRow', cells.map(cell => cell && new Node('poetCell', cell))));
-        }else{
-          nodes[nodes.length - 1].content.push(new Node(persianCode, parseMarkdownToNodes(line)));
+        const lastNode = nodes[nodes.length - 1];
+      
+        if (persianCode === "poet") {
+          const cells = line.split(' -- ').map(cell => cell.trim());
+          lastNode.content.push(new Node('poetRow', cells.map(cell => cell && new Node('poetCell', cell))));
+        } else if (["note", "tip", "important", "warning", "caution"].includes(persianCode)) {
+          lastNode.content.push(new Node(persianCode, parseMarkdownToNodes(line)));
+        } else {
+          lastNode.content.push(new Node(persianCode, line));
         }
         continue;
       }

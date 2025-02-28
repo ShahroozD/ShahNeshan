@@ -51,7 +51,7 @@ function nodeToHtml(node) {
     
     case 'caution':
       return `<div class="alert caution"><h1>احتیاط</h1><p>${renderNodesToHtml(node.content)}</p></div>`;
-      
+
     case 'hr':
       return `<hr />`;
     
@@ -81,9 +81,9 @@ function nodeToHtml(node) {
       
     case 'footnote':
         return `<li id="footnote-${node.attributes.ref}">${node.content} <a href="#footnote-ref-${node.attributes.ref}">↩</a></li>`;
-
-
+    
     default:
-      return '';
+      if(node.content) return `${node.content}\n` 
+      else return ""; 
   }
 }
