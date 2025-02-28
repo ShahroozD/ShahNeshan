@@ -59,8 +59,10 @@ export function parseMarkdownToNodes(markdown) {
             nodes.push(new Node('persianBlock', [new Node(persianCode, line)], { code: persianCode }));
           }
         } else {
-          if (codeMap[persianCode]) nodes[nodes.length - 1].content.push(new Node(persianCode, line));
           persianBlock = false;
+          if (!["note", "tip", "important", "warning", "caution"].includes(persianCode)) {
+            nodes[nodes.length - 1].content.push(new Node(persianCode, line))
+          };
         }
         continue;
       }

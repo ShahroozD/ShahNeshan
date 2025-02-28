@@ -83,7 +83,7 @@ function nodeToHtml(node) {
         return `<li id="footnote-${node.attributes.ref}">${node.content} <a href="#footnote-ref-${node.attributes.ref}">↩</a></li>`;
     
     default:
-      if(node.content) return `${node.content}\n` 
+      if(node.content) return `\n${node.content}\n` 
       else return ""; 
   }
 }

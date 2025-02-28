@@ -1,6 +1,6 @@
 {
   "name": "shahneshan",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A markdown parser that converts to HTML.",
   "main": "dist/markdownParser.js",
   "scripts": {
