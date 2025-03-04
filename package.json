@@ -1,8 +1,15 @@
 {
   "name": "shahneshan",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A markdown parser that converts to HTML.",
-  "main": "dist/markdownParser.js",
+  "type": "module",
+  "main": "dist/markdownParser.cjs.js",
+  "module": "dist/markdownParser.esm.js",
+  "exports": {
+    "import": "./dist/markdownParser.esm.js",
+    "require": "./dist/markdownParser.cjs.js",
+    "default": "./dist/markdownParser.cjs.js"
+  },
   "scripts": {
     "build": "webpack"
   },

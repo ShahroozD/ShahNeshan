@@ -274,7 +274,7 @@ export function parseMarkdownToNodes(markdown) {
 
       // Handle explicit links `[text](url)`
       if (/\[(.*?)\]\((.*?)\)/g.test(parsedLine)){
-        parsedLine = parsedLine.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
+        parsedLine = parsedLine.replace(/\[(.*?)\]\(([^()\s]+(?:\([^\s)]+\))*[^()\s]*)\)/g, (match, text, url) => {
           return `<a href="${url}" target="_blank">${text}</a>`;
         });
       } else if(/(?<!`)(https?:\/\/[^\s`]+)(?!`)/g.test(parsedLine)){
