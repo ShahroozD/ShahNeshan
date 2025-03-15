@@ -1,14 +1,15 @@
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: Vazirmatn;
   line-height: 1.6;
   padding: 20px;
+  line-height: 2;
 }
 
 #content {
   direction: rtl;
-
-  max-width: 800px;
+  text-align: justify;
+  max-width: 900px;
   margin: auto;
   padding: 20px;
   border: 1px solid #ddd;
@@ -38,4 +39,19 @@ ol{
   content: "";
   display: inline-block;
   width: 100%;	
+}
+
+
+pre{
+  color:#d2cec8;
+  background-color: #1c1e1f;
+  padding: 16px;
+  font-size: 95%;
+  line-height: 2.2;
+  border-radius: 6px;
+}
+
+pre:has(.javascript, .rust){
+  direction: ltr;
+  text-align: left;
 }

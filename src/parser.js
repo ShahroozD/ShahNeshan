@@ -2,6 +2,24 @@
 import Node from './node.js';
 import {replaceEmojiShortcodes} from "./utils/emojis.js";
 
+function applyInlineFormatting(line) {
+  // Apply emoji shortcode replacements
+  return replaceEmojiShortcodes(
+    line
+    .replace(/\\([#*`_{}\[\]()\\])/g, '$1')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\[\^(\d+)\]/g, (match, ref) => `<sup id="footnote-ref-${ref}"><a href="#footnote-${ref}">[${ref}]</a></sup>`)
+    .replace(/\^(.+?)\^/g, '<sup>$1</sup>')
+    .replace(/~~(.+?)~~/g, '<del>$1</del>')
+    .replace(/~(.+?)~/g, '<sub>$1</sub>')
+    .replace(/==(.+?)==/g, '<mark>$1</mark>')
+    .replace(/\[(.*?)\]\(([^()\s]+(?:\([^\s)]+\))*[^()\s]*)\)/g, '<a href="$2" target="_blank">$1</a>')
+    .replace(/(?<!`)(https?:\/\/[^\s`]+)(?!`)/g, '<a href="$1" target="_blank">$1</a>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+  );
+}
+
 export function parseMarkdownToNodes(markdown) {
     const lines = markdown.split('\n');
     const nodes = [];
@@ -98,8 +116,8 @@ export function parseMarkdownToNodes(markdown) {
       let headerMatch = line.match(/^(#{1,6}) (.*)/);
       if (headerMatch) {
         const level = headerMatch[1].length;
-        const content = headerMatch[2];
-        nodes.push(new Node('header', content, { level }));
+        const content =applyInlineFormatting(headerMatch[2]);
+        nodes.push(new Node('header', [new Node('paragraph', content)], { level }));
         continue;
       }
   
@@ -258,38 +276,9 @@ export function parseMarkdownToNodes(markdown) {
         listStack.pop();
       }
 
-
       // Detect inline styles and links
-      let parsedLine = line
-        .replace(/\\([#*`_{}\[\]()\\])/g, '$1')
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/\[\^(\d+)\]/g, (match, ref) => {       // Detect footnote references like `[^1]` in the main text
-          // If the footnote exists, link to it and add a superscript with the reference number
-          return (!footnotes[ref])?`<sup id="footnote-ref-${ref}"><a href="#footnote-${ref}">[${ref}]</a></sup>`:match})
-        .replace(/\^(.+?)\^/g, '<sup>$1</sup>')
-        .replace(/~~(.+?)~~/g, '<del>$1</del>')          // strikethrough
-        .replace(/~(.+?)~/g, '<sub>$1</sub>')            // 
-        .replace(/==(.+?)==/g, '<mark>$1</mark>');        // Highlight
+      let parsedLine = applyInlineFormatting(line);
 
-      // Handle explicit links `[text](url)`
-      if (/\[(.*?)\]\((.*?)\)/g.test(parsedLine)){
-        parsedLine = parsedLine.replace(/\[(.*?)\]\(([^()\s]+(?:\([^\s)]+\))*[^()\s]*)\)/g, (match, text, url) => {
-          return `<a href="${url}" target="_blank">${text}</a>`;
-        });
-      } else if(/(?<!`)(https?:\/\/[^\s`]+)(?!`)/g.test(parsedLine)){
-        // Handle automatic URL linking for plain URLs outside code
-        parsedLine = parsedLine.replace(/(?<!`)(https?:\/\/[^\s`]+)(?!`)/g, (url) => {
-            return `<a href="${url}" target="_blank">${url}</a>`;
-        });
-      } else{
-        // todooooo
-        parsedLine = parsedLine.replace(/`([^`]+)`/g, '<code>$1</code>')
-      }
-
-      // Replace emoji shortcodes with actual emojis
-      parsedLine = replaceEmojiShortcodes(parsedLine);
-  
       // For paragraph or plain text
       if (line.trim()) {
         nodes.push(new Node('paragraph', parsedLine));
