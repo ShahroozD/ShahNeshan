@@ -5,8 +5,6 @@ export function renderNodesToHtml(nodes) {
 }
 
 function nodeToHtml(node) {
-  console.log(node);
-  
   switch (node.type) {
     case 'header':
       return `<h${node.attributes.level} id="${renderNodesToHtml(node.content).toLowerCase().replace(/\s+/g, '-')}">${renderNodesToHtml(node.content)}</h${node.attributes.level}>`;
