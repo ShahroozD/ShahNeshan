@@ -2,7 +2,7 @@
 import Node from './node.js';
 import {replaceEmojiShortcodes} from "./utils/emojis.js";
 
-function applyInlineFormatting(line) {
+function applyInlineFormatting(line, footnotes) {
   // Detect inline styles and links
   let parsedLine = line
     .replace(/\\([#*`_{}\[\]()\\])/g, '$1')
@@ -48,7 +48,6 @@ export function parseMarkdownToNodes(markdown) {
     let persianCode = '';
     let currentBlockquote = null;
     let currentIndentLevel = 0;
-    let footnoteIndex = 1; // Counter for footnotes
   
     for (let i = 0; i < lines.length; i++){
       let line = lines[i];
@@ -133,7 +132,7 @@ export function parseMarkdownToNodes(markdown) {
       let headerMatch = line.match(/^(#{1,6}) (.*)/);
       if (headerMatch) {
         const level = headerMatch[1].length;
-        const content =applyInlineFormatting(headerMatch[2]);
+        const content =applyInlineFormatting(headerMatch[2], footnotes);
         nodes.push(new Node('header', [new Node('paragraph', content)], { level }));
         continue;
       }
@@ -294,7 +293,7 @@ export function parseMarkdownToNodes(markdown) {
       }
 
       // Detect inline styles and links
-      let parsedLine = applyInlineFormatting(line);
+      let parsedLine = applyInlineFormatting(line, footnotes);
 
       // For paragraph or plain text
       if (line.trim()) {

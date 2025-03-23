@@ -43,6 +43,7 @@ ol{
 
 
 pre{
+  direction: ltr;
   color:#d2cec8;
   background-color: #1c1e1f;
   padding: 16px;
