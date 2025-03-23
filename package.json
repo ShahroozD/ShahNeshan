@@ -1,6 +1,6 @@
 {
   "name": "shahneshan",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "A markdown parser that converts to HTML.",
   "type": "module",
   "main": "dist/markdownParser.cjs.js",

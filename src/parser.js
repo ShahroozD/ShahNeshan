@@ -94,9 +94,6 @@ export function parseMarkdownToNodes(markdown) {
           }
         } else {
           persianBlock = false;
-          if (!["note", "tip", "important", "warning", "caution"].includes(persianCode)) {
-            nodes[nodes.length - 1].content.push(new Node(persianCode, line))
-          };
         }
         continue;
       }
