@@ -1,6 +1,6 @@
 {
   "name": "shahneshan",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "A markdown parser that converts to HTML.",
   "type": "module",
   "main": "dist/markdownParser.cjs.js",
@@ -24,7 +24,7 @@
   },
   "keywords": ["markdown", "parser", "HTML", "javascript"],
   "author": "shahrooz darani",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "devDependencies": {
     "babel-loader": "^9.2.1",
     "css-loader": "^7.1.2",

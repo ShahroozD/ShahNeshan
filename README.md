@@ -81,6 +81,12 @@ configure({
 
 این امکان را فراهم می‌کند که بدون نیاز به فایل‌های CSS اضافی، ظاهر محتوای رندر شده را کنترل کنید.
 
+## مجوز
+
+این پروژه در ابتدا تحت مجوز MIT منتشر شده بود، اما از سال ۲۰۲۵ به بعد تحت مجوز GNU GPL نسخه ۳ (GPLv3) منتشر می‌شود.  
+برای اطلاعات بیشتر، فایل LICENSE را ببینید.
+
+
 
 </br>
 </br>
@@ -163,3 +169,9 @@ configure({
 ```
 
 This makes it easy to control the appearance of the rendered content without additional CSS files.
+
+
+## License
+
+This project was originally licensed under the MIT License. As of 2025, it is now licensed under the GNU General Public License v3.0 (GPLv3).  
+For more details, see the LICENSE file.
