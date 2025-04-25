@@ -197,43 +197,65 @@ export function parseMarkdownToNodes(markdown) {
         continue;
       }
   
-      let tableRowMatch = line.match(/^\|(.+)\|$/);
-      if (tableRowMatch) {
-          const tableNode = new Node('table', []);
-          let isFirstRow = true;
-
-          while (tableRowMatch) {
-              const cells = tableRowMatch[1].split('|').map(cell => cell.trim());
-
-              // Check if this is the first row
-              if (isFirstRow) {
-                  tableNode.content.push(new Node('tableRow', cells.map(cell => new Node('tableCell', cell))));
-              } else {
-                  tableNode.content.push(new Node('tableRow', cells.map(cell => new Node('tableCell', cell))));
-              }
-
-              // Advance to the next line
-              line = lines[++i] || '';
-              
-              // Check if the next line is a row of '--' or '==' (header underline)
-              if(isFirstRow){
-                isFirstRow = false;
-                if (/^\|\s*[-=]+\s*\|(\s*[-=]+\s*\|)*$/.test(line.trim())) {
-                  
-                    // Convert the first row's cells to header cells if underline is detected
-                    tableNode.content[0].content = tableNode.content[0].content.map(cell => {
-                        cell.type = 'tableHeaderCell'; // Change cell type to indicate header
-                        return cell;
-                    });
-                    line = lines[++i] || ''; // Skip the underline line
-                }
-              }
-              
-              tableRowMatch = line.match(/^\|(.+)\|$/);
-          }
-
-          nodes.push(tableNode);
-          continue;
+      if (/^\|\s*(.+)\s*\|\s*$/.test(line)) {
+        // 1) Collect all consecutive table‐style lines
+        const rawRows = [];
+        let j = i;
+        while (j < lines.length && /^\|\s*(.+)\s*\|\s*$/.test(lines[j])) {
+          rawRows.push(lines[j]);
+          j++;
+        }
+      
+        // 2) Check if the second row is actually an alignment spec
+        let alignments = [];
+        if (
+          rawRows.length >= 2 &&
+          /^\|\s*[:\-]+(?:\s*\|\s*[:\-]+)*\s*\|$/.test(rawRows[1].trim())
+        ) {
+          // Parse specs: "| :--- | ---: | :---: |"
+          alignments = rawRows[1]
+            .trim()
+            .slice(1, -1)           // drop leading/trailing pipes
+            .split('|')             // split into each column spec
+            .map(s => s.trim())     // trim whitespace
+            .map(spec => {
+              const left  = spec.startsWith(':');
+              const right = spec.endsWith(':');
+              if (left && right) return 'center';
+              if (left)           return 'left';
+              if (right)          return 'right';
+              return 'left';
+            });
+          rawRows.splice(1, 1);      // remove the spec‐row from the data rows
+        }
+      
+        // 3) Build the table node
+        const tableNode = new Node('table', []);
+        rawRows.forEach((rowText, rowIdx) => {
+          const isHeader = rowIdx === 0 && alignments.length > 0;
+          // extract the inner cells string, split & trim
+          const cells = rowText.match(/^\|\s*(.+)\s*\|\s*$/)[1]
+            .split('|')
+            .map(c => c.trim());
+      
+          const cellNodes = cells.map((text, colIdx) => {
+            // parse any inline markdown inside the cell
+            const parsedContent = parseMarkdownToNodes(text);
+            // decide cell type
+            const type = isHeader ? 'tableHeaderCell' : 'tableCell';
+            // attach alignment if present
+            const attrs = {};
+            if (alignments[colIdx]) attrs.align = alignments[colIdx];
+            return new Node(type, parsedContent, attrs);
+          });
+      
+          tableNode.content.push(new Node('tableRow', cellNodes));
+        });
+      
+        // 4) Push and advance
+        nodes.push(tableNode);
+        i = j;      // skip past the entire table block
+        continue;
       }
   
       // Detect unordered lists

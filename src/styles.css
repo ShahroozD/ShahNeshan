@@ -39,6 +39,10 @@ td {
     padding: 0.2em 1em;
 }
 
+table p {
+  margin: 0;
+}
+
 
 .persian{
   direction: rtl;

@@ -84,10 +84,10 @@ function nodeToHtml(node) {
         return `<tr>${renderNodesToHtml(node.content)}</tr>`;      
     
     case 'tableHeaderCell':
-        return `<th>${node.content}</th>`;
+        return `<th align="${node.attributes.align}">${renderNodesToHtml(node.content)}</th>`;
     
     case 'tableCell':
-        return `<td>${node.content}</td>`;
+        return `<td align="${node.attributes.align}">${renderNodesToHtml(node.content)}</td>`;
     
     case 'image':
       return `<img src="${node.attributes.src}" alt="${node.attributes.alt}">`;
