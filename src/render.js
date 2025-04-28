@@ -29,19 +29,19 @@ function nodeToHtml(node) {
       return `<h${node.attributes.level} id="${renderNodesToHtml(node.content).toLowerCase().replace(/\s+/g, '-')}">${renderNodesToHtml(node.content)}</h${node.attributes.level}>`;
       
     case 'paragraph':
-      return `<p>${node.content}</p>`;
+      return `<p dir='auto' >${node.content}</p>`;
       
     case 'blockquote':
       return `<blockquote>${renderNodesToHtml(node.content)}</blockquote>`;
       
     case 'ul':
-      return `<ul>${renderNodesToHtml(node.content)}</ul>`;
+      return `<ul dir='${node.attributes.isRTL?'rtl':'ltr'}'>${renderNodesToHtml(node.content)}</ul>`;
       
     case 'ol':
-      return `<ol>${renderNodesToHtml(node.content)}</ol>`;
+      return `<ol dir='${node.attributes.isRTL?'rtl':'ltr'}'>${renderNodesToHtml(node.content)}</ol>`;
       
     case 'li':
-      return `<li>${renderNodesToHtml(node.content)}</li>`;
+      return `<li dir='${node.attributes.isRTL?'rtl':'ltr'}'>${renderNodesToHtml(node.content)}</li>`;
       
     case 'codeBlock':
       const code = node.content.join('\n');
@@ -75,7 +75,7 @@ function nodeToHtml(node) {
       return `<hr />`;
     
     case 'taskItem':
-        return `<li class="task"><input type="checkbox" ${node.attributes.checked ? 'checked' : ''} disabled> ${renderNodesToHtml(node.content)}</li>`;
+        return `<li dir='${node.attributes.isRTL?'rtl':'ltr'}' class="task"><input type="checkbox" ${node.attributes.checked ? 'checked' : ''} disabled> ${renderNodesToHtml(node.content)}</li>`;
     
     case 'table':
         return `<table>${renderNodesToHtml(node.content)}</table>`;
@@ -96,7 +96,7 @@ function nodeToHtml(node) {
         return node.content;
 
     case 'footnotes':
-        return `<section class="footnotes"><h2>Footnotes</h2><ol>${renderNodesToHtml(node.content)}</ol></section>`;
+        return `<section dir='auto' class="footnotes"><h2>Footnotes</h2><ol>${renderNodesToHtml(node.content)}</ol></section>`;
       
     case 'footnote':
         return `<li id="footnote-${node.attributes.ref}">${node.content} <a href="#footnote-ref-${node.attributes.ref}">↩</a></li>`;

@@ -173,9 +173,12 @@ export function parseMarkdownToNodes(markdown) {
       if (taskMatch) {
             const isChecked = taskMatch[1] === 'x';
             const content = taskMatch[2];
-            const taskNode = new Node('taskItem', parseMarkdownToNodes(content), { checked: isChecked });
+            const isRTL = /^\s*[-+*] \[(?: |x)\]\s*[\u0590-\u05FF\u0600-\u06FF]/u.test(line);
+            console.log(isRTL);
+            
+            const taskNode = new Node('taskItem', parseMarkdownToNodes(content), { checked: isChecked, isRTL });
             if (listStack.length === 0 || listStack[listStack.length - 1].type !== 'ul') {
-                const listNode = new Node('ul', []);
+                const listNode = new Node('ul', [], {isRTL} );
                 nodes.push(listNode);
                 listStack.push(listNode);
             }
@@ -261,11 +264,12 @@ export function parseMarkdownToNodes(markdown) {
       // Detect unordered lists
       if (/^\s*[-*]\s(.*)/.test(line)) {
         const content = line.replace(/^\s*[-*]\s(.*)/, '$1');
-        const listItemNode = new Node('li', parseMarkdownToNodes(content));
+        const attributes = {isRTL: /^\s*[0-9\u06F0-\u06F9]+\.\s*[\u0590-\u05FF\u0600-\u06FF]/u.test(line)} 
+        const listItemNode = new Node('li', parseMarkdownToNodes(content), attributes);
 
         // Handle nesting for unordered list
         if (indentLevel > currentIndentLevel) {
-            const listNode = new Node('ul', []);
+            const listNode = new Node('ul', [], attributes);
             if (listStack.length > 0) {
                 listStack[listStack.length - 1].content.push(listNode);
             } else {
@@ -281,7 +285,7 @@ export function parseMarkdownToNodes(markdown) {
 
         // Add list item to the current list
         if (listStack.length === 0 || listStack[listStack.length - 1].type !== 'ul') {
-            const listNode = new Node('ul', []);
+            const listNode = new Node('ul', [], attributes);
             nodes.push(listNode);
             listStack.push(listNode);
         }
@@ -293,13 +297,14 @@ export function parseMarkdownToNodes(markdown) {
       // Detect ordered lists
       if (/^\s*[0-9\u06F0-\u06F9]+\.\s(.*)/.test(line)) {
         const content = line.replace(/^\s*[0-9\u06F0-\u06F9]+\.\s(.*)/, '$1');
-        const listItemNode = new Node('li', parseMarkdownToNodes(content));
+        const attributes = {isRTL: /^\s*[0-9\u06F0-\u06F9]+\.\s*[\u0590-\u05FF\u0600-\u06FF]/u.test(line)} 
+        const listItemNode = new Node('li', parseMarkdownToNodes(content), attributes);
         
         
         // Check if a new nested list should be created
         if (indentLevel > currentIndentLevel) {
             // Create new nested ordered list
-            const listNode = new Node('ol', []);
+            const listNode = new Node('ol', [], attributes);
             if (listStack.length > 0) {
                 listStack[listStack.length - 1].content.push(listNode);
             } else {
@@ -316,7 +321,7 @@ export function parseMarkdownToNodes(markdown) {
 
         // Add list item to the current list
         if (listStack.length === 0 || listStack[listStack.length - 1].type !== 'ol') {
-            const listNode = new Node('ol', []);
+            const listNode = new Node('ol', [], attributes);
             nodes.push(listNode);
             listStack.push(listNode);
         }
