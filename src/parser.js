@@ -173,9 +173,7 @@ export function parseMarkdownToNodes(markdown) {
       if (taskMatch) {
             const isChecked = taskMatch[1] === 'x';
             const content = taskMatch[2];
-            const isRTL = /^\s*[-+*] \[(?: |x)\]\s*[\u0590-\u05FF\u0600-\u06FF]/u.test(line);
-            console.log(isRTL);
-            
+            const isRTL = /^\s*[-+*] \[(?: |x)\]\s*[\u0590-\u05FF\u0600-\u06FF]/u.test(line);           
             const taskNode = new Node('taskItem', parseMarkdownToNodes(content), { checked: isChecked, isRTL });
             if (listStack.length === 0 || listStack[listStack.length - 1].type !== 'ul') {
                 const listNode = new Node('ul', [], {isRTL} );
@@ -264,7 +262,7 @@ export function parseMarkdownToNodes(markdown) {
       // Detect unordered lists
       if (/^\s*[-*]\s(.*)/.test(line)) {
         const content = line.replace(/^\s*[-*]\s(.*)/, '$1');
-        const attributes = {isRTL: /^\s*[0-9\u06F0-\u06F9]+\.\s*[\u0590-\u05FF\u0600-\u06FF]/u.test(line)} 
+        const attributes = {isRTL: /^\s*[-*]\s*[\u0590-\u05FF\u0600-\u06FF]/u.test(line)} 
         const listItemNode = new Node('li', parseMarkdownToNodes(content), attributes);
 
         // Handle nesting for unordered list
