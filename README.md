@@ -15,7 +15,7 @@
 برای استفاده مستقیم در مرورگر بدون نصب از طریق npm:
 
 ```html
-<script src="https://cdn.example.com/shahneshan.umd.js"></script>
+<script src="https://unpkg.com/shahneshan@2.0.0/dist/shahneshan.umd.js"></script>
 <script>
   const markdown = '# سلام دنیا!';
   const html = shahneshan.markdownToOutput(markdown);
