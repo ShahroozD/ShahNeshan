@@ -71,7 +71,7 @@ A customizable Markdown parser that supports plugins and configuration.
 To use ShahNeshan directly in a browser via CDN (no build tools required):
 
 ```html
-<script src="https://cdn.example.com/shahneshan.umd.js"></script>
+<script src="https://unpkg.com/shahneshan@2.0.0/dist/shahneshan.umd.js"></script>
 <script>
   const markdown = '# Hello, world!';
   const html = shahneshan.markdownToOutput(markdown);
