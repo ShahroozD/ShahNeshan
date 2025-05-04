@@ -6,8 +6,8 @@ module.exports = [
     entry: './src/index.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'markdownParser.cjs.js',
-      library: 'markdownParser',
+      filename: 'shahneshan.umd.js',
+      library: 'shahneshan',
       libraryTarget: 'umd', // UMD for CommonJS, AMD, and browser
       globalObject: 'this'
     },
@@ -37,7 +37,7 @@ module.exports = [
     entry: './src/index.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'markdownParser.esm.js',
+      filename: 'shahneshan.esm.js',
       library: {
         type: 'module'
       }
