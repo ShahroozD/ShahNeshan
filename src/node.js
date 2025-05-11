@@ -20,10 +20,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // src/node.js
 
 class Node {
-  constructor(type, content = '', attributes = {}) {
+  constructor(type, content = '', attributes = {}, raw = '') {
     this.type = type;
     this.content = content;
     this.attributes = attributes;
+    this.raw = raw;
   }
 }
   

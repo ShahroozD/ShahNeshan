@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // src/parser.js
 import Node from './node.js';
 import {replaceEmojiShortcodes} from "./utils/emojis.js";
+import { escapeHtml, stripInlineMarkdown } from './utils/helper.js';
 
 function applyInlineFormatting(line, footnotes) {
   // Detect inline styles and links
@@ -38,7 +39,7 @@ function applyInlineFormatting(line, footnotes) {
   // Handle explicit links `[text](url)`
   if (/\[(.*?)\]\((.*?)\)/g.test(parsedLine)){
     parsedLine = parsedLine.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
-      return `<a href="${url}" target="_blank">${text}</a>`;
+      return `<a href="${url}">${text}</a>`;
     });
   } else if(/(?<!`)(https?:\/\/[^\s`]+)(?!`)/g.test(parsedLine)){
     // Handle automatic URL linking for plain URLs outside code
@@ -46,8 +47,9 @@ function applyInlineFormatting(line, footnotes) {
         return `<a href="${url}" target="_blank">${url}</a>`;
     });
   } else{
-    // todooooo
-    parsedLine = parsedLine.replace(/`([^`]+)`/g, '<code>$1</code>')
+    parsedLine = parsedLine.replace(/`([^`]+?)`/g,
+      (match, inner) => `<code>${escapeHtml(inner)}</code>`);
+    
   }
 
   // Replace emoji shortcodes with actual emojis
@@ -149,7 +151,8 @@ export function parseMarkdownToNodes(markdown) {
       if (headerMatch) {
         const level = headerMatch[1].length;
         const content =applyInlineFormatting(headerMatch[2], footnotes);
-        nodes.push(new Node('header', [new Node('paragraph', content)], { level }));
+        const raw = stripInlineMarkdown(headerMatch[2]);
+        nodes.push(new Node('header', [new Node('paragraph', content)], { level }, raw));
         continue;
       }
   
@@ -193,7 +196,9 @@ export function parseMarkdownToNodes(markdown) {
         continue;
       }
 
-      if (/^\s*<[^>]+>/.test(line)) {
+      if (/^\s*<([a-z][\w-]*)(\s[^>]*)?\/>\s*$/i.test(line)) {
+        console.log("line", line);
+        
         nodes.push(new Node('html', line));
         continue;
       }

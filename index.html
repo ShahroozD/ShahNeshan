@@ -7,7 +7,7 @@
   <!-- <link rel="stylesheet" href="style.css"> -->
   <link rel="stylesheet" href="./customStyle.css">
   <!-- <script src="script.js"></script> -->
-  <script src="./dist/markdownParser.cjs.js"></script>
+  <script src="./dist/shahneshan.umd.js"></script>
   
 </head>
 <body>
@@ -20,7 +20,7 @@
   </script>
   <script>
     // Inject custom styles
-    markdownParser.configure({
+    shahneshan.configure({
       customStyles: ``,
       plugins: [testEmoji] // Register plugins here
     });
@@ -33,7 +33,7 @@
       if (!response.ok) throw new Error('Failed to load markdown file');
       const markdown = await response.text();
       
-      const htmlContent = markdownParser.markdownToOutput(markdown);
+      const htmlContent = shahneshan.markdownToOutput(markdown);
       document.getElementById('content').innerHTML = htmlContent;
     } catch (error) {
       console.error(error);

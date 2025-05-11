@@ -17,6 +17,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import { escapeHtml } from "./utils/helper.js";
+
 // src/render.js
 
 export function renderNodesToHtml(nodes) {
@@ -26,7 +28,7 @@ export function renderNodesToHtml(nodes) {
 function nodeToHtml(node) {
   switch (node.type) {
     case 'header':
-      return `<h${node.attributes.level} id="${renderNodesToHtml(node.content).toLowerCase().replace(/\s+/g, '-')}">${renderNodesToHtml(node.content)}</h${node.attributes.level}>`;
+      return `<h${node.attributes.level} id="${node.raw.toLowerCase().replace(/\s+/g, '-')}">${renderNodesToHtml(node.content)}</h${node.attributes.level}>`;
       
     case 'paragraph':
       return `<p dir='auto' >${node.content}</p>`;
@@ -45,7 +47,7 @@ function nodeToHtml(node) {
       
     case 'codeBlock':
       const code = node.content.join('\n');
-      return `<pre><code class="${node.attributes.lang}">${code}</code></pre>`;
+      return `<pre><code class="${node.attributes.lang}">${escapeHtml(code)}</code></pre>`;
     
     case 'persianBlock':
       return `<div class="persian ${node.attributes.code}">${renderNodesToHtml(node.content)}</div>`;

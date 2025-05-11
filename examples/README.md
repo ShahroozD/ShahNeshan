@@ -1,220 +1,101 @@
-# Project Title
+# bidi-textarea
 
-Welcome to the **Markdown Parser** project! \ This parser converts Markdown files into HTML. This document is designed to test various Markdown features supported by the parser. :khande:
-
----
-
-## Table of Contents
-
-1. [Features](#features)
-2. [Installation](#installation)
-3. [Usage](#usage)
-4. [Examples](#examples)
-5. [License](#license)
+A custom `<bidi-textarea>` web component that behaves like a standard `<textarea>`, with built‑in support for **per‑paragraph direction detection** (LTR/RTL) plus an optional **default direction** override. Ideal for multilingual content and lightweight, framework‑free integration.
 
 ---
 
-## Features
+## 🚀 Features
 
-- **Headers** from `#` to `######`
-- *Italic*, **bold**, and `inline code`
-- [Links](https://www.example.com) and images
-- Lists:
-  - Unordered lists
-  - Ordered lists
-  - Nested lists
-- Blockquotes
-- Code blocks
-- Horizontal rules
-
-Here is a link to [OpenAI](https://www.openai.com).
-Check this site too: http://www.example.com
-But do not link this: `http://www.example.com`
-
-Gone camping! :tent: Be back soon.
-
-That is so funny! :joy:
+* **Automatic direction**: Detects Left‑to‑Right (LTR) or Right‑to‑Left (RTL) per paragraph.
+* **Default direction override**: Use the `default-direction` attribute to force blank or new paragraphs to LTR or RTL.
+* **Native `<textarea>`‑like API**: Works with `value`, events, focus/blur, selection.
+* **Lightweight & encapsulated**: Uses Shadow DOM; no external dependencies.
 
 ---
 
-## Installation
+## 📦 CDN *Installation
 
-To install this project, clone the repository and run the setup script:
+Load directly from JSDelivr:
 
-```bash
-git clone https://github.com/ShahroozD/ShahMark.git
-cd shahmark
-npm install
+```html
+<script type="module" src="https://cdn.jsdelivr.net/gh/ShahroozD/bidi-textarea/index.js"></script>
 ```
 
-## Usage
+---
 
-Simply run the following command to parse your Markdown file:
+## 🎉 Usage
 
-```bash
-node parse.js README.md
+Use the `<bidi-textarea>` tag just like a `<textarea>`:
+
+```html
+<!-- Default: automatic detection -->
+<bidi-textarea placeholder="متن خود را وارد کنید..."></bidi-textarea>
+
+<!-- Force blank/new paragraphs to LTR -->
+<bidi-textarea id="myEditor" default-direction="ltr"  placeholder="Type here..."></bidi-textarea>
+
+<script type="module">
+  window.addEventListener('DOMContentLoaded', () => {
+    const editor = document.getElementById('myEditor');
+    // Set initial content (lines split by "\n")
+    editor.value = "Hello world\nسلام دنیا\nBonjour le monde";
+
+    // Listen for changes
+    editor.addEventListener('input', () => {
+      console.log('Value:', editor.value);
+      console.log('Selection start:', editor.selectionStart);
+      console.log('Selection end:', editor.selectionEnd);
+    });
+
+    // Programmatic controls:
+    // editor.focus();
+    // editor.clear();
+    // editor.setSelectionRange(0, 5);
+  });
+</script>
 ```
 
-This will convert the Markdown into HTML and output it in the `dist` folder.
+> **Tip:** Set `value`, `placeholder`, and `default-direction` **after** DOMContentLoaded to ensure the element is initialized.
 
 ---
 
-## Examples
+## 🛠️ API Reference
 
-### Headers
+| Property / Method                | Description                                                 |
+| -------------------------------- | ----------------------------------------------------------- | 
+| `value`                          | Get/set plain‑text with `\n` line breaks (alias: `text`).   |
+| `text`                           | Alias for `.value`.                                         |
+| `placeholder`                    | Set hint text when empty (via attribute).                   |
+| `default-direction`              | (`rtl`,`ltr`) Force blank/new paragraphs to this direction. |
+| `focus()`                        | Focus the editor.                                           |
+| `blur()`                         | Remove focus.                                               |
+| `clear()`                        | Clear all content (resets to an empty paragraph).           |
+| `setSelectionRange(start, end?)` | Set cursor or selection by character index (inclusive).     |
+| `selectionStart`                 | Read-only: start index of the selection (character offset). |
+| `selectionEnd`                   | Read-only: end index of the selection (character offset).   |
 
-# Header 1
-## Header 2
-### Header 3
-#### Header 4
-##### Header 5
-###### Header 6
+### Events
 
-### Emphasis
-
-This text is **bold** and this text is *italic*. You can also combine them for ***bold and italic***.
-
-Inline code looks like this: `console.log("Hello, world!");`
-
-This is some text with footnotes[^1][^2].
-
-[^1]: This is footnote 1.
-[^2]: This is footnote 2.
-
-
-
-### Blockquotes
-
-> This is a blockquote.
-> 
-> - It can contain lists,
-> - **Bold text**, and
-> - *Italic text*
-
-> Nested blockquote:
-> > Another level of quote.
-
-### Lists
-
-#### Unordered List
-
-- Item 1
-  - Subitem 1.1
-  - Subitem 1.2
-- Item 2
-
-#### Ordered List
-
-1. First item
-2. Second item
-   1. Subitem 2.1
-   2. Subitem 2.2
-3. Third item
-
-### Images
-
-![OpenAI Logo](https://openai.com/favicon.ico)
-
-### Links
-
-Visit the [OpenAI website](https://www.openai.com) for more information.
+* `"input"`: Fired whenever content changes (typing, paste, delete).
 
 ---
 
-### Horizontal Rule
+## 🎨 Styling
 
----
+Style the host element with regular CSS:
 
-### Code Blocks
-
-```javascript
-function greet() {
-    console.log("Hello, world!");
+```css
+bidi-textarea {
+  display: block;
+  width: 100%;
+  margin: 20px 0;
 }
-greet();
-```
 
-```python
-def greet():
-    print("Hello, world!")
-
-greet()
-```
-
-## License
-
-```
-This project is licensed under the MIT License. See the LICENSE file for more information.
+/* Adjust the inner padding or border via ::part if exposed */
 ```
 
 ---
 
-### Explanation of the Content
+## 📄 License
 
-This Markdown file tests the following features:
-
-1. **Headers**: Six levels of headers.
-2. **Emphasis**: Bold, italic, and combined bold+italic text.
-3. **Inline Code**: Simple inline code in text.
-4. **Blockquotes**: Single and nested blockquotes with lists and formatted text inside.
-5. **Lists**: Unordered lists with subitems and ordered lists with nested subitems.
-6. **Images**: A sample image with alt text.
-7. **Links**: Hyperlinks to external URLs.
-8. **Horizontal Rules**: Divider lines with `---`.
-9. **Code Blocks**: Multiple fenced code blocks with language annotations (JavaScript and Python).
-10. **Persian Rules**: Divider lines with ...
-
-
-
-| Column 1       | Column 2       |
-| :------------- | --------------:|
-| Cell 1, Row 1  | Cell 2, Row 1  | 
-| Cell 1, Row 2  | Cell 1, Row 2  |
-
-
-This is ==highlighted text== in a sentence.
-~~The world is flat.~~ We now know that the world is round.  H~2~O  X^2^
-
-
-
-...شعر
-
-خرد رهنمای و خرد دلگشای -- خرد دست گیرد به هر دو سرای
-
-ازو شادمانی وزویت غمیست  -- وزویت فزونی وزویت کمیس
-
-خرد چشم جانست چون بنگری
-تو بی‌چشم شادان جهان نسپری
-...
-
-
-### شمارش فارسی
-
-۱. سرزمین
-۲. کشور
-۳. سرباز
-
-
-- [ ] کاری که باید بکنم
-- [x] کاری که انجام دادم
-
-
-...توجه
-اطلاعات مفیدی که کاربران باید بدانند، حتی در هنگام بررسی محتوا.
-...
-
-...نکته
-توصیه‌های مفید برای انجام بهتر یا آسان‌تر کارها.
-...
-
-...مهم
-اطلاعات کلیدی که کاربران برای رسیدن به هدف خود باید بدانند.
-...
-
-...هشدار
-اطلاعات فوری که نیاز به توجه فوری کاربر برای جلوگیری از مشکلات دارد.
-...
-
-...احتیاط
-در مورد خطرات یا پیامدهای منفی اقدامات خاص توصیه می‌کند.
-...
+MIT — free to use, modify, and share.

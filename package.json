@@ -1,6 +1,6 @@
 {
   "name": "shahneshan",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A markdown parser that converts to HTML.",
   "type": "module",
   "main": "dist/shahneshan.umd.js",
@@ -33,6 +33,8 @@
     "webpack": "^5.96.1",
     "webpack-cli": "^5.1.4"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "files": ["dist", "README.md"]
 }
